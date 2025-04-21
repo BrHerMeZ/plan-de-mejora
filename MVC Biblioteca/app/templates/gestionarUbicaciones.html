@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Ubicaciones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{{ url_for('admin_bp.dashboard') }}">Biblioteca - Admin</a>
+          <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.Inicio') }}">Catálogo</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_bp.gestionar_usuarios') }}">Usuarios</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_bp.reportes') }}">Reportes</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.gestionar_prestamos') }}">Préstamos</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.gestionar_ubicaciones') }}">Ubicaciones</a></li>
+            </ul>
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <span class="nav-link">{{ nombre }}</span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main_bp.Inicio') }}">Cerrar Sesión</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    <div class="container">
+        <h1 class="mt-5">Registrar Nueva Ubicación</h1>
+
+        <form method="POST" action="{{ url_for('main_bp.gestionar_ubicaciones') }}">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" name="nombre" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="planta" class="form-label">Planta</label>
+                <input type="text" class="form-control" name="planta">
+            </div>
+
+            <div class="mb-3">
+                <label for="estanteria" class="form-label">Estantería</label>
+                <input type="text" class="form-control" name="estanteria">
+            </div>
+
+            <div class="mb-3">
+                <label for="seccion" class="form-label">Sección</label>
+                <input type="text" class="form-control" name="seccion">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Registrar Ubicación</button>
+        </form>
+
+        <a href="{{ url_for('user_bp.login') }}" class="btn btn-secondary mt-3">Volver al inicio</a>
+    </div>
+</body>
+<footer class="bg-dark text-white py-4 mt-5">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-6">
+              <h5>Biblioteca Virtual</h5>
+              <p>Sistema de gestión bibliotecaria.</p>
+          </div>
+          <div class="col-md-3">
+              <h5>Enlaces</h5>
+              <ul class="list-unstyled">
+                  <li><a href="#" class="text-white">Acerca de</a></li>
+                  <li><a href="#" class="text-white">Servicios</a></li>
+                  <li><a href="#" class="text-white">Contacto</a></li>
+              </ul>
+          </div>
+          <div class="col-md-3">
+              <h5>Contacto</h5>
+              <address>
+                  <i class="fas fa-map-marker-alt me-2"></i> Av. Principal #123<br>
+                  <i class="fas fa-phone me-2"></i> (123) 456-7890<br>
+                  <i class="fas fa-envelope me-2"></i> info@biblioteca.com
+              </address>
+          </div>
+      </div>
+      <hr>
+      <div class="text-center">
+          <p class="mb-0">&copy; 2025 Sistema de Biblioteca. Todos los derechos reservados.</p>
+      </div>
+  </div>
+</footer>
+</html>

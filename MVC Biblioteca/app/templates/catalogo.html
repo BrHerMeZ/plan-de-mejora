@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Libros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{{ url_for('admin_bp.dashboard') }}">Biblioteca - Admin</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item"><a class="nav-link active" href="{{ url_for('main_bp.catalogo') }}">Catálogo</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.catalogo') }}">Reservas</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_bp.gestionar_usuarios') }}">Usuarios</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_bp.reportes') }}">Reportes</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.gestionar_prestamos') }}">Préstamos</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.gestionar_ubicaciones') }}">Ubicaciones</a></li>
+            </ul>
+            <form class="d-flex me-3" action="{{ url_for('main_bp.catalogo') }}" method="GET">
+                <input class="form-control me-2" type="search" placeholder="Buscar libro..." name="q">
+                <button class="btn btn-outline-light" type="submit">Buscar</button>
+            </form>
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <span class="nav-link">{{ nombre }}</span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main_bp.Inicio') }}">Cerrar Sesión</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+    </nav>
+
+    <div class="container mt-3">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Credenciales incorrectas. Verifique su correo y contraseña.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+
+    <div class="container py-4">
+        <h2 class="text-center mb-4">Catálogo de Libros</h2>
+
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <form class="row g-3" method="GET" action="{{ url_for('main_bp.catalogo') }}">
+                            <div class="col-md-3">
+                                <label class="form-label">Categoría</label>
+                                <select class="form-select" name="categoria">
+                                    <option value="">Todas</option>
+                                    <option value="Ficción">Ficción</option>
+                                    <option value="No Ficción">No Ficción</option>
+                                    <option value="Ciencia">Ciencia</option>
+                                    <option value="Historia">Historia</option>
+                                    <option value="Poesía">Poesía</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Autor</label>
+                                <select class="form-select" name="autor">
+                                    <option value="">Todos</option>
+                                    <option value="Gabriel García Márquez">Gabriel García Márquez</option>
+                                    <option value="Isabel Allende">Isabel Allende</option>
+                                    <option value="Stephen Hawking">Stephen Hawking</option>
+                                    <option value="J.K. Rowling">J.K. Rowling</option>
+                                    <option value="Pablo Neruda">Pablo Neruda</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Idioma</label>
+                                <select class="form-select" name="idioma">
+                                    <option value="">Todos</option>
+                                    <option value="Español">Español</option>
+                                    <option value="Inglés">Inglés</option>
+                                    <option value="Francés">Francés</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-center text-muted mb-4">Libros encontrados: 6</p>
+
+        <div class="row g-4">
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+                <div class="card h-100 shadow-lg border-0">
+                    <span class="book-availability">
+                        <i class="fas fa-check-circle me-1"></i> Disponible
+                    </span>
+                    <img src="/api/placeholder/400/320" class="card-img-top" alt="Portada de Cien años de soledad">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-primary">Cien años de soledad</h5>
+                        <h6 class="card-subtitle text-muted mb-2">
+                            <i class="fas fa-user-edit me-1"></i> Gabriel García Márquez
+                        </h6>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>ISBN:</strong> 9788497592208</p>
+                            <p class="mb-1">
+                                <strong>Categoría:</strong> 
+                                <span class="badge bg-info text-dark">Ficción</span>
+                            </p>
+                            <p class="mb-1"><strong>Editorial:</strong> Literatura Random House</p>
+                            <p class="mb-1"><strong>Idioma:</strong> Español</p>
+                            <p class="mb-1"><strong>Publicado:</strong> 1967</p>
+                            <p class="mb-1"><strong>Páginas:</strong> 496</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="card-text text-truncate" id="resumen-corto-1">
+                                La obra narra la historia de la familia Buendía a lo largo de siete generaciones en el pueblo ficticio de Macondo.
+                            </p>
+                            <div class="collapse" id="resumen-completo-1">
+                                <p class="card-text">La obra narra la historia de la familia Buendía a lo largo de siete generaciones en el pueblo ficticio de Macondo. Considerada una de las obras más importantes de la literatura hispanoamericana y universal, es una novela de realismo mágico que relata la historia de la familia Buendía a lo largo de siete generaciones en el pueblo ficticio de Macondo.</p>
+                            </div>
+                            <a class="btn btn-link btn-sm p-0" data-bs-toggle="collapse" 
+                               href="#resumen-completo-1" 
+                               onclick="document.getElementById('resumen-corto-1').classList.toggle('d-none')">
+                                Ver más
+                            </a>
+                        </div>
+                        <div class="mt-auto">
+                            <a href="{{ url_for('main_bp.gestionar_prestamos', libro_id=1) }}" 
+                               class="btn btn-reserve w-100">
+                                <i class="fas fa-bookmark me-1"></i> Reservar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+                <div class="card h-100 shadow-lg border-0">
+                    <span class="book-availability">
+                        <i class="fas fa-check-circle me-1"></i> Disponible
+                    </span>
+                    <img src="/api/placeholder/400/320" class="card-img-top" alt="Portada de Breve historia del tiempo">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-primary">Breve historia del tiempo</h5>
+                        <h6 class="card-subtitle text-muted mb-2">
+                            <i class="fas fa-user-edit me-1"></i> Stephen Hawking
+                        </h6>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>ISBN:</strong> 9788498387728</p>
+                            <p class="mb-1">
+                                <strong>Categoría:</strong> 
+                                <span class="badge bg-info text-dark">Ciencia</span>
+                            </p>
+                            <p class="mb-1"><strong>Editorial:</strong> Crítica</p>
+                            <p class="mb-1"><strong>Idioma:</strong> Español</p>
+                            <p class="mb-1"><strong>Publicado:</strong> 1988</p>
+                            <p class="mb-1"><strong>Páginas:</strong> 256</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="card-text text-truncate" id="resumen-corto-2">
+                                Explora conceptos fundamentales de la cosmología como el espacio y el tiempo.
+                            </p>
+                            <div class="collapse" id="resumen-completo-2">
+                                <p class="card-text">Explora conceptos fundamentales de la cosmología como el espacio y el tiempo, el Big Bang, los agujeros negros y la teoría de la relatividad. El físico teórico Stephen Hawking intenta explicar de forma accesible varios temas de cosmología, incluyendo el Big Bang, los agujeros negros y los conos de luz.</p>
+                            </div>
+                            <a class="btn btn-link btn-sm p-0" data-bs-toggle="collapse" 
+                               href="#resumen-completo-2" 
+                               onclick="document.getElementById('resumen-corto-2').classList.toggle('d-none')">
+                                Ver más
+                            </a>
+                        </div>
+                        <div class="mt-auto">
+                            <a href="{{ url_for('main_bp.gestionar_prestamos', libro_id=2) }}" 
+                               class="btn btn-reserve w-100">
+                                <i class="fas fa-bookmark me-1"></i> Reservar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+                <div class="card h-100 shadow-lg border-0">
+                    <span class="book-availability">
+                        <i class="fas fa-check-circle me-1"></i> Disponible
+                    </span>
+                    <img src="/api/placeholder/400/320" class="card-img-top" alt="Portada de Harry Potter y la piedra filosofal">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-primary">Harry Potter y la piedra filosofal</h5>
+                        <h6 class="card-subtitle text-muted mb-2">
+                            <i class="fas fa-user-edit me-1"></i> J.K. Rowling
+                        </h6>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>ISBN:</strong> 9788478884957</p>
+                            <p class="mb-1">
+                                <strong>Categoría:</strong> 
+                                <span class="badge bg-info text-dark">Ficción</span>
+                            </p>
+                            <p class="mb-1"><strong>Editorial:</strong> Salamandra</p>
+                            <p class="mb-1"><strong>Idioma:</strong> Español</p>
+                            <p class="mb-1"><strong>Publicado:</strong> 1997</p>
+                            <p class="mb-1"><strong>Páginas:</strong> 320</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="card-text text-truncate" id="resumen-corto-3">
+                                La primera novela de la serie Harry Potter que narra la vida de un joven mago.
+                            </p>
+                            <div class="collapse" id="resumen-completo-3">
+                                <p class="card-text">La primera novela de la serie Harry Potter que narra la vida de un joven mago, huérfano y con una misteriosa cicatriz en forma de rayo, que descubre su verdadera identidad cuando es invitado a asistir al Colegio Hogwarts de Magia y Hechicería. En esta escuela, Harry conoce a amigos que le acompañarán en emocionantes aventuras.</p>
+                            </div>
+                            <a class="btn btn-link btn-sm p-0" data-bs-toggle="collapse" 
+                               href="#resumen-completo-3" 
+                               onclick="document.getElementById('resumen-corto-3').classList.toggle('d-none')">
+                                Ver más
+                            </a>
+                        </div>
+                        <div class="mt-auto">
+                            <a href="{{ url_for('main_bp.gestionar_prestamos', libro_id=3) }}" 
+                               class="btn btn-reserve w-100">
+                                <i class="fas fa-bookmark me-1"></i> Reservar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+                <div class="card h-100 shadow-lg border-0">
+                    <span class="book-availability">
+                        <i class="fas fa-check-circle me-1"></i> Disponible
+                    </span>
+                    <img src="/api/placeholder/400/320" class="card-img-top" alt="Portada de La casa de los espíritus">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-primary">La casa de los espíritus</h5>
+                        <h6 class="card-subtitle text-muted mb-2">
+                            <i class="fas fa-user-edit me-1"></i> Isabel Allende
+                        </h6>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>ISBN:</strong> 9788401352065</p>
+                            <p class="mb-1">
+                                <strong>Categoría:</strong> 
+                                <span class="badge bg-info text-dark">Ficción</span>
+                            </p>
+                            <p class="mb-1"><strong>Editorial:</strong> Plaza & Janés</p>
+                            <p class="mb-1"><strong>Idioma:</strong> Español</p>
+                            <p class="mb-1"><strong>Publicado:</strong> 1982</p>
+                            <p class="mb-1"><strong>Páginas:</strong> 480</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="card-text text-truncate" id="resumen-corto-4">
+                                Narra la saga familiar de los Trueba a lo largo de cuatro generaciones.
+                            </p>
+                            <div class="collapse" id="resumen-completo-4">
+                                <p class="card-text">Narra la saga familiar de los Trueba a lo largo de cuatro generaciones, en un contexto histórico que abarca desde principios del siglo XX hasta el golpe de Estado en Chile. La novela sigue la vida de la familia Trueba, desde la patriarcal Esteban hasta su nieta Alba, y las mujeres notables que pasan por sus vidas, conciliando los aspectos personales con los históricos.</p>
+                            </div>
+                            <a class="btn btn-link btn-sm p-0" data-bs-toggle="collapse" 
+                               href="#resumen-completo-4" 
+                               onclick="document.getElementById('resumen-corto-4').classList.toggle('d-none')">
+                                Ver más
+                            </a>
+                        </div>
+                        <div class="mt-auto">
+                            <a href="{{ url_for('main_bp.gestionar_prestamos', libro_id=4) }}" 
+                               class="btn btn-reserve w-100">
+                                <i class="fas fa-bookmark me-1"></i> Reservar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    // apartado de css para el boton de reserva qye tengo ubicado en catalogo 
+    <style>
+        .btn-reserve {
+            background-color: #6c757d;
+            color: white;
+            transition: all 0.3s;
+        }
+        .btn-reserve:hover {
+            background-color: #5a6268;
+            color: white;
+        }
+        .card-img-top {
+            height: 250px;
+            object-fit: cover;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        });
+    </script>
+</body>
+</html>

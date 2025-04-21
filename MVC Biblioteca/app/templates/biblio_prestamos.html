@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Préstamos - Biblioteca</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Biblioteca - Bibliotecario</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('bibliotecario_bp.dashboard') }}">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('bibliotecario_bp.listar_libros') }}">Libros</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{{ url_for('bibliotecario_bp.listar_prestamos') }}">Préstamos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('bibliotecario_bp.listar_reservas') }}">Reservas</a>
+          </li>
+        </ul>
+        <div class="d-flex">
+          <span class="navbar-text me-3">
+            <i class="bi bi-person-circle"></i> {{ session.get('nombre', 'Bibliotecario') }}
+          </span>
+          <a href="{{ url_for('user_bp.logout') }}" class="btn btn-outline-light btn-sm">Cerrar Sesión</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Gestión de Préstamos</h2>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoPrestamo">
+        <i class="bi bi-plus-circle"></i> Nuevo Préstamo
+      </button>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <form class="row g-3">
+          <div class="col-md-4">
+            <label for="filtroEstado" class="form-label">Estado</label>
+            <select class="form-select" id="filtroEstado">
+              <option value="">Todos</option>
+              <option value="activo">Activos</option>
+              <option value="devuelto">Devueltos</option>
+              <option value="vencido">Vencidos</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="filtroUsuario" class="form-label">Usuario</label>
+            <input type="text" class="form-control" id="filtroUsuario" placeholder="Nombre del usuario">
+          </div>
+          <div class="col-md-4">
+            <label for="filtroLibro" class="form-label">Libro</label>
+            <input type="text" class="form-control" id="filtroLibro" placeholder="Título del libro">
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <button type="reset" class="btn btn-secondary">Limpiar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Libro</th>
+                <th>Fecha de Préstamo</th>
+                <th>Fecha de Devolución</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if prestamos %}
+                {% for prestamo in prestamos %}
+                  <tr class="{% if prestamo.estado == 'vencido' %}table-danger{% elif prestamo.estado == 'activo' %}table-info{% endif %}">
+                    <td>{{ prestamo.id_prestamo }}</td>
+                    <td>{{ prestamo.nombre_usuario }}</td>
+                    <td>{{ prestamo.titulo }}</td>
+                    <td>{{ prestamo.fecha_prestamo }}</td>
+                    <td>{{ prestamo.fecha_devolucion_programada }}</td>
+                    <td>
+                      {% if prestamo.estado == 'activo' %}
+                        <span class="badge bg-primary">Activo</span>
+                      {% elif prestamo.estado == 'devuelto' %}
+                        <span class="badge bg-success">Devuelto</span>
+                      {% elif prestamo.estado == 'vencido' %}
+                        <span class="badge bg-danger">Vencido</span>
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if prestamo.estado == 'activo' %}
+                        <a href="{{ url_for('bibliotecario_bp.devolver_prestamo', id_prestamo=prestamo.id_prestamo) }}" class="btn btn-sm btn-success">
+                          <i class="bi bi-check-circle"></i> Devolver
+                        </a>
+                      {% else %}
+                        <button class="btn btn-sm btn-secondary" disabled>
+                          <i class="bi bi-check-circle"></i> Devuelto
+                        </button>
+                      {% endif %}
+                      <button class="btn btn-sm btn-info">
+                        <i class="bi bi-eye"></i> Detalles
+                      </button>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="7" class="text-center">No hay préstamos registrados</td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="nuevoPrestamo" tabindex="-1" aria-labelledby="nuevoPrestamo" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Registrar Nuevo Préstamo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="{{ url_for('main_bp.gestionar_prestamos') }}" method="post">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="id_usuario" class="form-label">ID de Usuario</label>
+              <input type="text" class="form-control" id="id_usuario" name="id_usuario" required>
+            </div>
+            <div class="mb-3">
+              <label for="id_copia" class="form-label">ID de Copia</label>
+              <input type="text" class="form-control" id="id_copia" name="id_copia" required>
+            </div>
+            <div class="mb-3">
+              <label for="fecha_devolucion_programada" class="form-label">Fecha de Devolución</label>
+              <input type="date" class="form-control" id="fecha_devolucion_programada" name="fecha_devolucion_programada" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Registrar Préstamo</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+</body>
+</html>

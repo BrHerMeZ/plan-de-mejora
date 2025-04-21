@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Préstamos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{{ url_for('admin_bp.dashboard') }}">Biblioteca - Admin</a>
+          <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.Inicio') }}">Catálogo</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_bp.gestionar_usuarios') }}">Usuarios</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_bp.reportes') }}">Reportes</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.gestionar_prestamos') }}">Préstamos</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('main_bp.gestionar_ubicaciones') }}">Ubicaciones</a></li>
+            </ul>
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <span class="nav-link">{{ nombre }}</span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main_bp.Inicio') }}">Cerrar Sesión</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    <div class="container my-5">
+        <h1 class="text-center">Gestionar Préstamos</h1>
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="id_usuario" class="form-label">ID Usuario</label>
+                    <input type="number" class="form-control" id="id_usuario" name="id_usuario" required>
+                </div>
+                <div class="mb-3">
+                    <label for="id_copia" class="form-label">ID Copia del Libro</label>
+                    <input type="number" class="form-control" id="id_copia" name="id_copia" required>
+                </div>
+                <div class="mb-3">
+                    <label for="fecha_devolucion_programada" class="form-label">Fecha Devolución Programada</label>
+                    <input type="date" class="form-control" id="fecha_devolucion_programada" name="fecha_devolucion_programada" required>
+                </div>
+                <button type="submit" class="btn btn-success">Registrar Préstamo</button>
+            </form>
+
+                <a href="{{ url_for('user_bp.login') }}" class="btn btn-secondary mt-3">Volver al Catálogo</a>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+</html>
